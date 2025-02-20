@@ -1,5 +1,5 @@
 import SimpleLightbox from "simplelightbox";
-export function renderGallery (images, galleryContainer) {
+export function renderGallery (images, galleryContainer, append = false) {
     const galleryMarkup = images.map(
         ({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) =>
          `<li class="gallery-item">
@@ -19,7 +19,12 @@ export function renderGallery (images, galleryContainer) {
           </li>`
       )
       .join('');
-      galleryContainer.innerHTML = galleryMarkup;
+      if (append) {
+        galleryContainer.insertAdjacentHTML('beforeend', galleryMarkup);
+    } else { 
+        galleryContainer.innerHTML = galleryMarkup;
+    }
+
       const lightbox = new SimpleLightbox('.gallery a', {
         captionsData: 'alt',
         captionDelay: 250,
