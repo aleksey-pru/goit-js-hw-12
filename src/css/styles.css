@@ -106,5 +106,8 @@ img {
 }
 
 .button-container {
-  text-align: center;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin: 40px
 }
