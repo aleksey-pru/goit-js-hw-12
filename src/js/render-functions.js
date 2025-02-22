@@ -1,4 +1,6 @@
 import SimpleLightbox from "simplelightbox";
+import { lightbox } from "../main";
+
 export function renderGallery (images, galleryContainer, append = false) {
     const galleryMarkup = images.map(
         ({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) =>
@@ -25,11 +27,8 @@ export function renderGallery (images, galleryContainer, append = false) {
         galleryContainer.innerHTML = galleryMarkup;
     }
 
-      const lightbox = new SimpleLightbox('.gallery a', {
-        captionsData: 'alt',
-        captionDelay: 250,
-      });
       lightbox.refresh();
 }
+
 
   

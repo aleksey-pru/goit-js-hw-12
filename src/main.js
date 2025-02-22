@@ -11,11 +11,11 @@ const refs = {
     loader : document.querySelector('.loader'),
     loadbtn : document.querySelector('.load-btn'),
 }
-// const form = document.querySelector('.submit-form');
-// const galleryContainer = document.querySelector('.gallery');
-// const loader = document.querySelector('.loader');
-// const loadbtn = document.querySelector('.load-btn');
 
+export const lightbox = new SimpleLightbox('.gallery a', {
+    captionsData: 'alt',
+    captionDelay: 250,
+  });
 export let page = 1;
 export let per_page = 40; 
 let search = '';
@@ -39,16 +39,23 @@ refs.form.addEventListener('submit', async e => {
         const response = await fetchSearch(search, page, per_page);
         refs.form.reset();
         const imagesData = response.data.hits;
+        const totalHits = response.data.totalHits;
         if(imagesData.length === 0) {
+            refs.loadbtn.classList.add('hidden');  
             iziToast.error({
                 position: 'topRight',
                 title: 'Error',
                 message: 'Sorry, there are no images matching your search query. Please try again!',
             });  
-            return;      
+            return; 
     }
     renderGallery(imagesData, refs.galleryContainer);
     page += 1;
+    if (totalHits > per_page) {
+        refs.loadbtn.classList.remove('hidden');
+    } else {
+        refs.loadbtn.classList.add('hidden');
+    }
 
     } catch (error) {
         iziToast.error({
@@ -59,7 +66,6 @@ refs.form.addEventListener('submit', async e => {
         console.log(error);
     } finally {
         refs.loader.classList.add('hidden');
-        refs.loadbtn.classList.remove('hidden');
     }
 
 
@@ -87,6 +93,7 @@ refs.loadbtn.addEventListener('click', async e => {
         } else {
             refs.loadbtn.classList.remove('hidden');
         }
+        
     } catch (error) {
         iziToast.error({
             position: 'topRight',
